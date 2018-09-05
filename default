@@ -1,3 +1,9 @@
+## This will pass orginal server header 
+## Original header from Apache2 with HSTS, HPKP supported 
+## Change cipher suite and ssl_protocols to match the original server header
+## Change https://thecustomizewindows.com to your orgin server
+## Only pause to read comment where # added
+
 server {
     listen 80;
     listen  [::]:80 ipv6only=on;
@@ -15,12 +21,15 @@ server {
     listen  [::]:443 ssl http2 ipv6only=on;
     server_name localhost;
        	ssl on;
+        ## START LOCAL CERTIFICATE
+        # nginx uses concat version of public server cert and intermediate cert
        	ssl_certificate /etc/nginx/ssl/public-intermediatebundle.crt;
-       	ssl_certificate_key /etc/nginx/ssl/thecustomizewindows.com.key;
+       	ssl_certificate_key /etc/nginx/ssl/server.key;
        	ssl_dhparam /etc/nginx/ssl/ssh2/dhparam.pem;
-       	# ssl_trusted_certificate /etc/nginx/ssl/root-inter.cert;
+        ## END LOCAL CERTIFICATE
+        # modify SSL protocols to match origin server
        	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-        # old cipher, use with poly
+        # modify cipher to match origin server
        	ssl_ciphers EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
        	ssl_prefer_server_ciphers on;
     location / {
@@ -29,7 +38,7 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        # throws error
+        # throws error, use cautiously 
         # proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
