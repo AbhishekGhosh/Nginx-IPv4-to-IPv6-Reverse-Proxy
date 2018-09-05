@@ -20,7 +20,7 @@ server {
        	ssl_dhparam /etc/nginx/ssl/ssh2/dhparam.pem;
        	# ssl_trusted_certificate /etc/nginx/ssl/root-inter.cert;
        	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-        # old cipher, use poly
+        # old cipher, use with poly
        	ssl_ciphers EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
        	ssl_prefer_server_ciphers on;
     location / {
